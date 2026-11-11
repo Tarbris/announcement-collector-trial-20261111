@@ -1,0 +1,54 @@
+{
+  "session": "01a1cafe-84f3-7551-82d1-b89188df96f7",
+  "initial_commit": "8fe5bf0f65a0a66fdf10eb0f648d1ed29317cabe",
+  "patch_call_ids": [
+    "call_00_plciagh1nl5no848n3l4n47v",
+    "call_00_qt9epuhyov1hw6mwqw6k8g5i",
+    "call_00_0wm2sw41341t8f9s89z6x5gs",
+    "call_00_y8s1o1u2wdq9tftcllnwnmj7",
+    "call_00_a3ehinssdze1545nhmhmiphu",
+    "call_00_8xfhioghpo69hgg8s1o7y2r4"
+  ],
+  "files": [
+    {
+      "file": "README.md",
+      "matches_trace_replay": true,
+      "sha256_bytes": "5978c8cf55beb9d8033c2aef1a854ce4777a33d03a9bd98c4c0029ab9a21aa13"
+    },
+    {
+      "file": "collector.py",
+      "matches_trace_replay": true,
+      "sha256_bytes": "9d4111978f38d60843c457e5476ca1cf091001b6eae383fbdb3e4606944bb758"
+    },
+    {
+      "file": "test_collector.py",
+      "matches_trace_replay": true,
+      "sha256_bytes": "63ee61e835dda24f79d7f9f3175b456a961ab5ac2ab41be4631d2584394c81cb"
+    },
+    {
+      "file": "dump_db.py",
+      "matches_trace_replay": true,
+      "sha256_bytes": "62f513d169793fafa11de3355e858e84f35971bfb1b32153576abe1b24468daa"
+    },
+    {
+      "file": "demo.ps1",
+      "matches_trace_replay": true,
+      "sha256_bytes": "a358c310b74a0466b835e13e8d4ebf13b0111e11033e2b15aa430b674200b5be"
+    },
+    {
+      "file": "fixture_server.py",
+      "matches_initial": true,
+      "sha256_bytes": "76257967a866f1b57bb8a7cb0ecff9c5721e479e0d16176a29d41af4c6840da5"
+    },
+    {
+      "file": "fixtures/pages.json",
+      "matches_initial": true,
+      "sha256_bytes": "f050c571a959e8594ade239411ec669ef5cf503d84c3cfff5067da6fb62d04dd"
+    },
+    {
+      "file": ".gitignore",
+      "matches_initial": true,
+      "sha256_bytes": "1c2b52db8ac5a4226f28b24cb35380e300492b0da97a848906027a5cf89f84b2"
+    }
+  ]
+}

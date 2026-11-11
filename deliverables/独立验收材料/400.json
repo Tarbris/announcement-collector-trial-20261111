@@ -1,0 +1,17 @@
+{
+  "args": [
+    "C:\\ProgramData\\Anaconda3\\python.exe",
+    "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\trial_repo\\collector.py",
+    "run",
+    "--db",
+    "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\acceptance_runtime\\400.db",
+    "--base-url",
+    "http://127.0.0.1:61315",
+    "--workers",
+    "2"
+  ],
+  "returncode": 1,
+  "stdout": "",
+  "stderr": "采集失败：分区 south：GET http://127.0.0.1:61315/feed?partition=south&cursor=start 返回非成功状态 HTTP 400：{\"error\": \"invalid request must not retry\"}；分区 north：GET http://127.0.0.1:61315/feed?partition=north&cursor=start 返回非成功状态 HTTP 400：{\"error\": \"invalid request must not retry\"}\n",
+  "elapsed": 0.172
+}

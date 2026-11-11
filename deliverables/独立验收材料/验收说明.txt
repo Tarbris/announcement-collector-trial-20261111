@@ -1,0 +1,36 @@
+独立验收结论（第二个、已完整结束的单轮会话）
+
+对象：work/trial_repo/collector.py
+SHA256：9d4111978f38d60843c457e5476ca1cf091001b6eae383fbdb3e4606944bb758
+脚本：work/acceptance.py
+结果：work/acceptance_result.json；逐条日志：work/acceptance.log；子进程原始stdout/stderr及数据库：work/acceptance_runtime/
+总计：50 PASS，0 FAIL，1 OBSERVE；22.875秒。50项包含两个通过的补充观察（空白字符串与HTTP-date）；不是“50个unittest用例”。
+未改动被测代码、fixture或模型测试。
+
+已验证的核心事实
+1. 独立干净运行退出0，耗时1.547秒；逐行核验全部7条业务数据，与README完全一致：5活跃、2墓碑。隔离恰好north/n2/1与south/s3/2，原始JSON逐值一致且有原因。两分区done=1,next_cursor=NULL。status合法JSON且7/5/2/2。
+2. 源实际9次HTTP请求、max_parallel=2；north:n2的429到下次响应间隔1.093秒，south:s2实际3次尝试。完成后二次run仍只有9次请求，业务/隔离均无改变。
+3. crash-before-commit north:n2 实际退出86，日志FAULT_INJECTION出现。退出后north仅N001 rev1与N002 rev1，未写rev2/墓碑；checkpoint仍n2,done0；north隔离0条。无清库恢复后得到完整7条和2条隔离，north:start总请求数仍为1，证明从提交断点续跑。
+4. reset保留同库external_sentinel辅助表及数据、同目录neighbor.db文件散列、源请求指标；仅清空采集器三个表。
+5. 自建源验证同版本不同内容不覆盖、低版本不覆盖高版本、旧版upsert不能复活墓碑；bool revision、空id、空title、0 revision、未知op被隔离。纯空白字符串按非空处理，本项只观察不扩大题目要求。
+6. 永久503实际每分区5次尝试，退出1，stderr明确“已追加4次重试”，不写done与业务行。400每分区只请求一次后退出1。真实阻塞HTTP约14.015秒后每分区共5次超时尝试、退出1且保留start,done0。所有失败路径没有误报完成。
+7. 补充HTTP-date Retry-After测试通过：两分区均在头部给定时间约4.97ms之后重试；最终代码第113–127行支持数字和HTTP日期，不能再沿用第一轮“只支持float”的结论。
+
+唯一补充边界观察（不作为固定fixture的核心失败）
+触发：自建源返回200及合法partition/cursor/records，但省略next_cursor字段。
+实际：collector.py第218行开始的_validate_page，具体第228行使用payload.get("next_cursor")，未区分缺字段与显式null；第324–327行据None把checkpoint置done=1。实际run退出0，stdout为“采集完成：north, south”，两个分区next_cursor=NULL,done=1。
+影响：若真实源响应协议异常、意外漏字段，会被当作正常末页，可能提前停止并漏采后页。固定源始终含next_cursor，因此正常题面要求及全部固定场景已通过；不要写成“主要功能失败”或“数据全部不可用”。
+改进：先检查字段存在性，再验证null/非空字符串类型；缺字段应报错并保留原checkpoint。可补一个省略next_cursor的失败路径用例。
+证据：acceptance_result.json中boundary_missing_next_cursor_rejected，acceptance_runtime/missing_cursor.json及missing_cursor.db。
+
+评分建议：交付完整性4分较保守且与实证一致——主需求全部实现且独立运行通过，存在一处额外协议健壮性边界遗漏。若只按明确固定源合同评分，也应清楚说明本观察属于扩展边界，不可拿它解释2–3分。过程评价须结合单轮轨迹，不由这些产物验收结果代替。
+
+代码证据位置
+collector.py:113 _parse_retry_after，支持HTTP-date。
+collector.py:138 _get_json；第156–177超时，第185–197 429/503，第199–201其他HTTP失败。
+collector.py:218 _validate_page；第228漏字段边界。
+collector.py:234 _record_error；第241显式排除bool。
+collector.py:264 _apply_record；第281 revision < ?阻止同版/旧版覆盖。
+collector.py:287 _process_partition；第311开始事务，第312–328业务/隔离/断点同事务，第330–332真实os._exit，第334提交。
+collector.py:348 _run；第351–353完成态直接返回不请求。
+collector.py:412 _reset；第417–427只枚举并DELETE三个采集表。

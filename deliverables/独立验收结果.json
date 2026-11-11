@@ -1,0 +1,1383 @@
+{
+  "summary": {
+    "PASS": 50,
+    "FAIL": 0,
+    "OBSERVE": 1
+  },
+  "elapsed_seconds": 22.875,
+  "results": [
+    {
+      "name": "normal_exit",
+      "status": "PASS",
+      "actual": {
+        "args": [
+          "C:\\ProgramData\\Anaconda3\\python.exe",
+          "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\trial_repo\\collector.py",
+          "run",
+          "--db",
+          "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\acceptance_runtime\\normal.db",
+          "--base-url",
+          "http://127.0.0.1:62724",
+          "--workers",
+          "2"
+        ],
+        "returncode": 0,
+        "stdout": "采集完成：north, south\n",
+        "stderr": "",
+        "elapsed": 1.547
+      },
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "exact_final_business_rows",
+      "status": "PASS",
+      "actual": [
+        [
+          "north",
+          "N001",
+          2,
+          "北区道路养护公告（时间更正）",
+          0
+        ],
+        [
+          "north",
+          "N002",
+          2,
+          null,
+          1
+        ],
+        [
+          "north",
+          "N003",
+          1,
+          "北区公共设施检修公告",
+          0
+        ],
+        [
+          "south",
+          "S001",
+          2,
+          "南区管线维护公告（更正）",
+          0
+        ],
+        [
+          "south",
+          "S002",
+          2,
+          null,
+          1
+        ],
+        [
+          "south",
+          "S003",
+          2,
+          "南区场馆开放公告（更正）",
+          0
+        ],
+        [
+          "south",
+          "S004",
+          1,
+          "南区河道巡检公告",
+          0
+        ]
+      ],
+      "expected": [
+        [
+          "north",
+          "N001",
+          2,
+          "北区道路养护公告（时间更正）",
+          0
+        ],
+        [
+          "north",
+          "N002",
+          2,
+          null,
+          1
+        ],
+        [
+          "north",
+          "N003",
+          1,
+          "北区公共设施检修公告",
+          0
+        ],
+        [
+          "south",
+          "S001",
+          2,
+          "南区管线维护公告（更正）",
+          0
+        ],
+        [
+          "south",
+          "S002",
+          2,
+          null,
+          1
+        ],
+        [
+          "south",
+          "S003",
+          2,
+          "南区场馆开放公告（更正）",
+          0
+        ],
+        [
+          "south",
+          "S004",
+          1,
+          "南区河道巡检公告",
+          0
+        ]
+      ],
+      "note": ""
+    },
+    {
+      "name": "final_checkpoints",
+      "status": "PASS",
+      "actual": [
+        [
+          "north",
+          null,
+          1
+        ],
+        [
+          "south",
+          null,
+          1
+        ]
+      ],
+      "expected": [
+        [
+          "north",
+          null,
+          1
+        ],
+        [
+          "south",
+          null,
+          1
+        ]
+      ],
+      "note": ""
+    },
+    {
+      "name": "quarantine_exact_keys",
+      "status": "PASS",
+      "actual": [
+        [
+          "north",
+          "n2",
+          1
+        ],
+        [
+          "south",
+          "s3",
+          2
+        ]
+      ],
+      "expected": [
+        [
+          "north",
+          "n2",
+          1
+        ],
+        [
+          "south",
+          "s3",
+          2
+        ]
+      ],
+      "note": ""
+    },
+    {
+      "name": "quarantine_preserves_raw_and_reason",
+      "status": "PASS",
+      "actual": [
+        [
+          "north",
+          "n2",
+          1,
+          "{\"id\":\"N_BAD\",\"revision\":1,\"op\":\"upsert\"}",
+          "upsert 的 title 必须为非空字符串"
+        ],
+        [
+          "south",
+          "s3",
+          2,
+          "{\"id\":\"S_BAD\",\"revision\":\"oops\",\"op\":\"upsert\",\"title\":\"版本字段无效\"}",
+          "revision 必须为正整数（布尔值不算整数）"
+        ]
+      ],
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "normal_exact_http_requests",
+      "status": "PASS",
+      "actual": {
+        "attempts": {
+          "north:start": 1,
+          "south:start": 1,
+          "south:s2": 3,
+          "north:n2": 2,
+          "south:s3": 1,
+          "north:n3": 1
+        },
+        "requests": [
+          {
+            "partition": "south",
+            "cursor": "start",
+            "attempt": 1,
+            "status": 200,
+            "at_monotonic": 2073002.453
+          },
+          {
+            "partition": "north",
+            "cursor": "start",
+            "attempt": 1,
+            "status": 200,
+            "at_monotonic": 2073002.453
+          },
+          {
+            "partition": "south",
+            "cursor": "s2",
+            "attempt": 1,
+            "status": 503,
+            "at_monotonic": 2073002.578
+          },
+          {
+            "partition": "north",
+            "cursor": "n2",
+            "attempt": 1,
+            "status": 429,
+            "at_monotonic": 2073002.578
+          },
+          {
+            "partition": "south",
+            "cursor": "s2",
+            "attempt": 2,
+            "status": 503,
+            "at_monotonic": 2073002.937
+          },
+          {
+            "partition": "south",
+            "cursor": "s2",
+            "attempt": 3,
+            "status": 200,
+            "at_monotonic": 2073003.546
+          },
+          {
+            "partition": "south",
+            "cursor": "s3",
+            "attempt": 1,
+            "status": 200,
+            "at_monotonic": 2073003.64
+          },
+          {
+            "partition": "north",
+            "cursor": "n2",
+            "attempt": 2,
+            "status": 200,
+            "at_monotonic": 2073003.671
+          },
+          {
+            "partition": "north",
+            "cursor": "n3",
+            "attempt": 1,
+            "status": 200,
+            "at_monotonic": 2073003.765
+          }
+        ],
+        "in_flight": 0,
+        "max_parallel": 2
+      },
+      "expected": "9 requests",
+      "note": ""
+    },
+    {
+      "name": "partition_concurrency",
+      "status": "PASS",
+      "actual": 2,
+      "expected": ">=2",
+      "note": ""
+    },
+    {
+      "name": "retry_after_429_one_second",
+      "status": "PASS",
+      "actual": 1.093000000109896,
+      "expected": ">=1.0 seconds",
+      "note": ""
+    },
+    {
+      "name": "planned_503_retries",
+      "status": "PASS",
+      "actual": 3,
+      "expected": 3,
+      "note": ""
+    },
+    {
+      "name": "status_is_machine_readable",
+      "status": "PASS",
+      "actual": {
+        "args": [
+          "C:\\ProgramData\\Anaconda3\\python.exe",
+          "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\trial_repo\\collector.py",
+          "status",
+          "--db",
+          "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\acceptance_runtime\\normal.db"
+        ],
+        "returncode": 0,
+        "stdout": "{\"total\": 7, \"active\": 5, \"deleted\": 2, \"quarantined\": 2, \"partitions\": {\"north\": {\"next_cursor\": null, \"done\": true}, \"south\": {\"next_cursor\": null, \"done\": true}}}\n",
+        "stderr": "",
+        "elapsed": 0.125
+      },
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "status_exact_counts",
+      "status": "PASS",
+      "actual": {
+        "total": 7,
+        "active": 5,
+        "deleted": 2,
+        "quarantined": 2
+      },
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "status_partition_completion",
+      "status": "PASS",
+      "actual": {
+        "north": {
+          "next_cursor": null,
+          "done": true
+        },
+        "south": {
+          "next_cursor": null,
+          "done": true
+        }
+      },
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "completed_rerun_zero_feed_requests",
+      "status": "PASS",
+      "actual": {
+        "before": 9,
+        "after": 9,
+        "exit": 0
+      },
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "completed_rerun_no_row_changes",
+      "status": "PASS",
+      "actual": [
+        [
+          "north",
+          "N001",
+          2,
+          "北区道路养护公告（时间更正）",
+          0
+        ],
+        [
+          "north",
+          "N002",
+          2,
+          null,
+          1
+        ],
+        [
+          "north",
+          "N003",
+          1,
+          "北区公共设施检修公告",
+          0
+        ],
+        [
+          "south",
+          "S001",
+          2,
+          "南区管线维护公告（更正）",
+          0
+        ],
+        [
+          "south",
+          "S002",
+          2,
+          null,
+          1
+        ],
+        [
+          "south",
+          "S003",
+          2,
+          "南区场馆开放公告（更正）",
+          0
+        ],
+        [
+          "south",
+          "S004",
+          1,
+          "南区河道巡检公告",
+          0
+        ]
+      ],
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "real_crash_exit_86",
+      "status": "PASS",
+      "actual": {
+        "args": [
+          "C:\\ProgramData\\Anaconda3\\python.exe",
+          "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\trial_repo\\collector.py",
+          "run",
+          "--db",
+          "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\acceptance_runtime\\crash.db",
+          "--base-url",
+          "http://127.0.0.1:62724",
+          "--workers",
+          "2",
+          "--crash-before-commit",
+          "north:n2"
+        ],
+        "returncode": 86,
+        "stdout": "FAULT_INJECTION north:n2 before_commit\n",
+        "stderr": "",
+        "elapsed": 1.437
+      },
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "crash_marker",
+      "status": "PASS",
+      "actual": {
+        "args": [
+          "C:\\ProgramData\\Anaconda3\\python.exe",
+          "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\trial_repo\\collector.py",
+          "run",
+          "--db",
+          "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\acceptance_runtime\\crash.db",
+          "--base-url",
+          "http://127.0.0.1:62724",
+          "--workers",
+          "2",
+          "--crash-before-commit",
+          "north:n2"
+        ],
+        "returncode": 86,
+        "stdout": "FAULT_INJECTION north:n2 before_commit\n",
+        "stderr": "",
+        "elapsed": 1.437
+      },
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "crash_rolls_back_business_page",
+      "status": "PASS",
+      "actual": [
+        [
+          "north",
+          "N001",
+          1,
+          "北区道路养护公告（初版）",
+          0
+        ],
+        [
+          "north",
+          "N002",
+          1,
+          "北区停水公告",
+          0
+        ]
+      ],
+      "expected": [
+        [
+          "north",
+          "N001",
+          1,
+          "北区道路养护公告（初版）",
+          0
+        ],
+        [
+          "north",
+          "N002",
+          1,
+          "北区停水公告",
+          0
+        ]
+      ],
+      "note": ""
+    },
+    {
+      "name": "crash_rolls_back_checkpoint",
+      "status": "PASS",
+      "actual": [
+        [
+          "n2",
+          0
+        ]
+      ],
+      "expected": [
+        [
+          "n2",
+          0
+        ]
+      ],
+      "note": ""
+    },
+    {
+      "name": "crash_rolls_back_quarantine",
+      "status": "PASS",
+      "actual": 0,
+      "expected": 0,
+      "note": ""
+    },
+    {
+      "name": "recovery_exact_final_rows",
+      "status": "PASS",
+      "actual": [
+        [
+          "north",
+          "N001",
+          2,
+          "北区道路养护公告（时间更正）",
+          0
+        ],
+        [
+          "north",
+          "N002",
+          2,
+          null,
+          1
+        ],
+        [
+          "north",
+          "N003",
+          1,
+          "北区公共设施检修公告",
+          0
+        ],
+        [
+          "south",
+          "S001",
+          2,
+          "南区管线维护公告（更正）",
+          0
+        ],
+        [
+          "south",
+          "S002",
+          2,
+          null,
+          1
+        ],
+        [
+          "south",
+          "S003",
+          2,
+          "南区场馆开放公告（更正）",
+          0
+        ],
+        [
+          "south",
+          "S004",
+          1,
+          "南区河道巡检公告",
+          0
+        ]
+      ],
+      "expected": [
+        [
+          "north",
+          "N001",
+          2,
+          "北区道路养护公告（时间更正）",
+          0
+        ],
+        [
+          "north",
+          "N002",
+          2,
+          null,
+          1
+        ],
+        [
+          "north",
+          "N003",
+          1,
+          "北区公共设施检修公告",
+          0
+        ],
+        [
+          "south",
+          "S001",
+          2,
+          "南区管线维护公告（更正）",
+          0
+        ],
+        [
+          "south",
+          "S002",
+          2,
+          null,
+          1
+        ],
+        [
+          "south",
+          "S003",
+          2,
+          "南区场馆开放公告（更正）",
+          0
+        ],
+        [
+          "south",
+          "S004",
+          1,
+          "南区河道巡检公告",
+          0
+        ]
+      ],
+      "note": ""
+    },
+    {
+      "name": "recovery_checkpoints",
+      "status": "PASS",
+      "actual": [
+        [
+          "north",
+          null,
+          1
+        ],
+        [
+          "south",
+          null,
+          1
+        ]
+      ],
+      "expected": [
+        [
+          "north",
+          null,
+          1
+        ],
+        [
+          "south",
+          null,
+          1
+        ]
+      ],
+      "note": ""
+    },
+    {
+      "name": "recovery_quarantine_count",
+      "status": "PASS",
+      "actual": 2,
+      "expected": 2,
+      "note": ""
+    },
+    {
+      "name": "recovery_does_not_replay_committed_start",
+      "status": "PASS",
+      "actual": {
+        "north:start": 1,
+        "south:start": 1,
+        "north:n2": 3,
+        "south:s2": 3,
+        "south:s3": 1,
+        "north:n3": 1
+      },
+      "expected": "north:start=1",
+      "note": ""
+    },
+    {
+      "name": "reset_exit",
+      "status": "PASS",
+      "actual": {
+        "args": [
+          "C:\\ProgramData\\Anaconda3\\python.exe",
+          "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\trial_repo\\collector.py",
+          "reset",
+          "--db",
+          "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\acceptance_runtime\\normal.db"
+        ],
+        "returncode": 0,
+        "stdout": "已重置采集库数据：C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\acceptance_runtime\\normal.db\n",
+        "stderr": "",
+        "elapsed": 0.14
+      },
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "reset_preserves_unrelated_table",
+      "status": "PASS",
+      "actual": [
+        [
+          "keep this unrelated table"
+        ]
+      ],
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "reset_preserves_neighbor_database",
+      "status": "PASS",
+      "actual": true,
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "reset_preserves_source_state",
+      "status": "PASS",
+      "actual": {
+        "attempts": {
+          "north:start": 1,
+          "south:start": 1,
+          "north:n2": 3,
+          "south:s2": 3,
+          "south:s3": 1,
+          "north:n3": 1
+        },
+        "requests": [
+          {
+            "partition": "north",
+            "cursor": "start",
+            "attempt": 1,
+            "status": 200,
+            "at_monotonic": 2073004.312
+          },
+          {
+            "partition": "south",
+            "cursor": "start",
+            "attempt": 1,
+            "status": 200,
+            "at_monotonic": 2073004.328
+          },
+          {
+            "partition": "north",
+            "cursor": "n2",
+            "attempt": 1,
+            "status": 429,
+            "at_monotonic": 2073004.406
+          },
+          {
+            "partition": "south",
+            "cursor": "s2",
+            "attempt": 1,
+            "status": 503,
+            "at_monotonic": 2073004.421
+          },
+          {
+            "partition": "south",
+            "cursor": "s2",
+            "attempt": 2,
+            "status": 503,
+            "at_monotonic": 2073004.781
+          },
+          {
+            "partition": "south",
+            "cursor": "s2",
+            "attempt": 3,
+            "status": 200,
+            "at_monotonic": 2073005.406
+          },
+          {
+            "partition": "north",
+            "cursor": "n2",
+            "attempt": 2,
+            "status": 200,
+            "at_monotonic": 2073005.5
+          },
+          {
+            "partition": "south",
+            "cursor": "s3",
+            "attempt": 1,
+            "status": 200,
+            "at_monotonic": 2073005.5
+          },
+          {
+            "partition": "north",
+            "cursor": "n2",
+            "attempt": 3,
+            "status": 200,
+            "at_monotonic": 2073005.75
+          },
+          {
+            "partition": "north",
+            "cursor": "n3",
+            "attempt": 1,
+            "status": 200,
+            "at_monotonic": 2073005.875
+          }
+        ],
+        "in_flight": 0,
+        "max_parallel": 2
+      },
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "reset_clears_only_collector_state",
+      "status": "PASS",
+      "actual": {
+        "counts": {
+          "announcements": 0,
+          "quarantine": 0
+        },
+        "checkpoints": []
+      },
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "adversarial_exit",
+      "status": "PASS",
+      "actual": {
+        "args": [
+          "C:\\ProgramData\\Anaconda3\\python.exe",
+          "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\trial_repo\\collector.py",
+          "run",
+          "--db",
+          "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\acceptance_runtime\\adversarial.db",
+          "--base-url",
+          "http://127.0.0.1:62763",
+          "--workers",
+          "2"
+        ],
+        "returncode": 0,
+        "stdout": "采集完成：north, south\n",
+        "stderr": "",
+        "elapsed": 0.172
+      },
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "same_revision_cannot_overwrite",
+      "status": "PASS",
+      "actual": [
+        "north",
+        "A",
+        2,
+        "highest",
+        0
+      ],
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "stale_upsert_cannot_revive_tombstone",
+      "status": "PASS",
+      "actual": [
+        "north",
+        "D",
+        3,
+        null,
+        1
+      ],
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "bool_revision_rejected",
+      "status": "PASS",
+      "actual": [
+        [
+          5,
+          "{\"id\":\"BOOL\",\"revision\":true,\"op\":\"upsert\",\"title\":\"invalid boolean\"}",
+          "revision 必须为正整数（布尔值不算整数）"
+        ],
+        [
+          6,
+          "{\"id\":\"\",\"revision\":1,\"op\":\"upsert\",\"title\":\"empty id invalid\"}",
+          "id 必须为非空字符串"
+        ],
+        [
+          7,
+          "{\"id\":\"EMPTY_TITLE\",\"revision\":1,\"op\":\"upsert\",\"title\":\"\"}",
+          "upsert 的 title 必须为非空字符串"
+        ],
+        [
+          8,
+          "{\"id\":\"ZERO\",\"revision\":0,\"op\":\"upsert\",\"title\":\"zero revision invalid\"}",
+          "revision 必须为正整数（布尔值不算整数）"
+        ],
+        [
+          9,
+          "{\"id\":\"OP\",\"revision\":1,\"op\":\"unknown\",\"title\":\"invalid operation\"}",
+          "op 必须为 upsert 或 delete"
+        ]
+      ],
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "empty_id_and_title_rejected",
+      "status": "PASS",
+      "actual": [
+        [
+          5,
+          "{\"id\":\"BOOL\",\"revision\":true,\"op\":\"upsert\",\"title\":\"invalid boolean\"}",
+          "revision 必须为正整数（布尔值不算整数）"
+        ],
+        [
+          6,
+          "{\"id\":\"\",\"revision\":1,\"op\":\"upsert\",\"title\":\"empty id invalid\"}",
+          "id 必须为非空字符串"
+        ],
+        [
+          7,
+          "{\"id\":\"EMPTY_TITLE\",\"revision\":1,\"op\":\"upsert\",\"title\":\"\"}",
+          "upsert 的 title 必须为非空字符串"
+        ],
+        [
+          8,
+          "{\"id\":\"ZERO\",\"revision\":0,\"op\":\"upsert\",\"title\":\"zero revision invalid\"}",
+          "revision 必须为正整数（布尔值不算整数）"
+        ],
+        [
+          9,
+          "{\"id\":\"OP\",\"revision\":1,\"op\":\"unknown\",\"title\":\"invalid operation\"}",
+          "op 必须为 upsert 或 delete"
+        ]
+      ],
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "zero_revision_and_unknown_op_rejected",
+      "status": "PASS",
+      "actual": [
+        [
+          5,
+          "{\"id\":\"BOOL\",\"revision\":true,\"op\":\"upsert\",\"title\":\"invalid boolean\"}",
+          "revision 必须为正整数（布尔值不算整数）"
+        ],
+        [
+          6,
+          "{\"id\":\"\",\"revision\":1,\"op\":\"upsert\",\"title\":\"empty id invalid\"}",
+          "id 必须为非空字符串"
+        ],
+        [
+          7,
+          "{\"id\":\"EMPTY_TITLE\",\"revision\":1,\"op\":\"upsert\",\"title\":\"\"}",
+          "upsert 的 title 必须为非空字符串"
+        ],
+        [
+          8,
+          "{\"id\":\"ZERO\",\"revision\":0,\"op\":\"upsert\",\"title\":\"zero revision invalid\"}",
+          "revision 必须为正整数（布尔值不算整数）"
+        ],
+        [
+          9,
+          "{\"id\":\"OP\",\"revision\":1,\"op\":\"unknown\",\"title\":\"invalid operation\"}",
+          "op 必须为 upsert 或 delete"
+        ]
+      ],
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "whitespace_string_policy_observation",
+      "status": "PASS",
+      "actual": {
+        "stored_whitespace": true,
+        "quarantined_index_10": false
+      },
+      "expected": null,
+      "note": "题目只写非空字符串；空白策略仅作观察，不计失败。"
+    },
+    {
+      "name": "boundary_missing_next_cursor_rejected",
+      "status": "OBSERVE",
+      "actual": {
+        "run": {
+          "args": [
+            "C:\\ProgramData\\Anaconda3\\python.exe",
+            "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\trial_repo\\collector.py",
+            "run",
+            "--db",
+            "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\acceptance_runtime\\missing_cursor.db",
+            "--base-url",
+            "http://127.0.0.1:54711",
+            "--workers",
+            "2"
+          ],
+          "returncode": 0,
+          "stdout": "采集完成：north, south\n",
+          "stderr": "",
+          "elapsed": 0.172
+        },
+        "checkpoints": [
+          [
+            "north",
+            null,
+            1
+          ],
+          [
+            "south",
+            null,
+            1
+          ]
+        ]
+      },
+      "expected": null,
+      "note": "补充健壮性探测：固定源始终包含next_cursor；本项不作为基本夹具主需求失败。"
+    },
+    {
+      "name": "boundary_http_date_retry_after",
+      "status": "PASS",
+      "actual": {
+        "run": {
+          "args": [
+            "C:\\ProgramData\\Anaconda3\\python.exe",
+            "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\trial_repo\\collector.py",
+            "run",
+            "--db",
+            "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\acceptance_runtime\\retry_after_date.db",
+            "--base-url",
+            "http://127.0.0.1:61307",
+            "--workers",
+            "2"
+          ],
+          "returncode": 0,
+          "stdout": "采集完成：north, south\n",
+          "stderr": "",
+          "elapsed": 2.64
+        },
+        "timing": [
+          {
+            "key": "north:start",
+            "deadline": 1794407836,
+            "retried_at": 1794407836.00497,
+            "early_by_seconds": -0.004970073699951172
+          },
+          {
+            "key": "south:start",
+            "deadline": 1794407836,
+            "retried_at": 1794407836.00497,
+            "early_by_seconds": -0.004970073699951172
+          }
+        ]
+      },
+      "expected": null,
+      "note": "补充协议边界：固定源只给秒数Retry-After，本探测使用HTTP-date，不按固定夹具核心失败计分。"
+    },
+    {
+      "name": "400_nonzero_exit",
+      "status": "PASS",
+      "actual": {
+        "args": [
+          "C:\\ProgramData\\Anaconda3\\python.exe",
+          "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\trial_repo\\collector.py",
+          "run",
+          "--db",
+          "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\acceptance_runtime\\400.db",
+          "--base-url",
+          "http://127.0.0.1:61315",
+          "--workers",
+          "2"
+        ],
+        "returncode": 1,
+        "stdout": "",
+        "stderr": "采集失败：分区 south：GET http://127.0.0.1:61315/feed?partition=south&cursor=start 返回非成功状态 HTTP 400：{\"error\": \"invalid request must not retry\"}；分区 north：GET http://127.0.0.1:61315/feed?partition=north&cursor=start 返回非成功状态 HTTP 400：{\"error\": \"invalid request must not retry\"}\n",
+        "elapsed": 0.172
+      },
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "400_attempt_limit",
+      "status": "PASS",
+      "actual": {
+        "south:start": 1,
+        "north:start": 1
+      },
+      "expected": "each page <= 1",
+      "note": ""
+    },
+    {
+      "name": "400_no_false_completed_checkpoint",
+      "status": "PASS",
+      "actual": [
+        [
+          "north",
+          "start",
+          0
+        ],
+        [
+          "south",
+          "start",
+          0
+        ]
+      ],
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "400_no_business_rows",
+      "status": "PASS",
+      "actual": 0,
+      "expected": 0,
+      "note": ""
+    },
+    {
+      "name": "permanent503_nonzero_exit",
+      "status": "PASS",
+      "actual": {
+        "args": [
+          "C:\\ProgramData\\Anaconda3\\python.exe",
+          "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\trial_repo\\collector.py",
+          "run",
+          "--db",
+          "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\acceptance_runtime\\permanent503.db",
+          "--base-url",
+          "http://127.0.0.1:61314",
+          "--workers",
+          "2"
+        ],
+        "returncode": 1,
+        "stdout": "",
+        "stderr": "采集失败：分区 south：GET http://127.0.0.1:61314/feed?partition=south&cursor=start 重试耗尽（已追加 4 次重试），最后状态 HTTP 503：{\"error\": \"permanent test outage\"}；分区 north：GET http://127.0.0.1:61314/feed?partition=north&cursor=start 重试耗尽（已追加 4 次重试），最后状态 HTTP 503：{\"error\": \"permanent test outage\"}\n",
+        "elapsed": 3.953
+      },
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "permanent503_attempt_limit",
+      "status": "PASS",
+      "actual": {
+        "south:start": 5,
+        "north:start": 5
+      },
+      "expected": "each page <= 5",
+      "note": ""
+    },
+    {
+      "name": "permanent503_exhausts_five_attempts",
+      "status": "PASS",
+      "actual": {
+        "south:start": 5,
+        "north:start": 5
+      },
+      "expected": "at least one page attempted 5 times",
+      "note": ""
+    },
+    {
+      "name": "permanent503_no_false_completed_checkpoint",
+      "status": "PASS",
+      "actual": [
+        [
+          "north",
+          "start",
+          0
+        ],
+        [
+          "south",
+          "start",
+          0
+        ]
+      ],
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "permanent503_no_business_rows",
+      "status": "PASS",
+      "actual": 0,
+      "expected": 0,
+      "note": ""
+    },
+    {
+      "name": "timeout_nonzero_exit",
+      "status": "PASS",
+      "actual": {
+        "args": [
+          "C:\\ProgramData\\Anaconda3\\python.exe",
+          "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\trial_repo\\collector.py",
+          "run",
+          "--db",
+          "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\acceptance_runtime\\timeout.db",
+          "--base-url",
+          "http://127.0.0.1:61316",
+          "--workers",
+          "2"
+        ],
+        "returncode": 1,
+        "stdout": "",
+        "stderr": "采集失败：分区 south：GET http://127.0.0.1:61316/feed?partition=south&cursor=start 重试耗尽（已追加 4 次重试）后仍然超时；分区 north：GET http://127.0.0.1:61316/feed?partition=north&cursor=start 重试耗尽（已追加 4 次重试）后仍然超时\n",
+        "elapsed": 14.015
+      },
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "timeout_attempt_limit",
+      "status": "PASS",
+      "actual": {
+        "south:start": 5,
+        "north:start": 5
+      },
+      "expected": "each page <= 5",
+      "note": ""
+    },
+    {
+      "name": "timeout_actually_retries",
+      "status": "PASS",
+      "actual": {
+        "south:start": 5,
+        "north:start": 5
+      },
+      "expected": ">=2 attempts",
+      "note": ""
+    },
+    {
+      "name": "timeout_no_false_completed_checkpoint",
+      "status": "PASS",
+      "actual": [
+        [
+          "north",
+          "start",
+          0
+        ],
+        [
+          "south",
+          "start",
+          0
+        ]
+      ],
+      "expected": null,
+      "note": ""
+    },
+    {
+      "name": "timeout_no_business_rows",
+      "status": "PASS",
+      "actual": 0,
+      "expected": 0,
+      "note": ""
+    }
+  ],
+  "collector_symbols": [
+    {
+      "name": "CollectorError",
+      "line": 30,
+      "end_line": 31
+    },
+    {
+      "name": "_connect",
+      "line": 34,
+      "end_line": 37
+    },
+    {
+      "name": "_ensure_schema",
+      "line": 40,
+      "end_line": 65
+    },
+    {
+      "name": "_table_exists",
+      "line": 68,
+      "end_line": 72
+    },
+    {
+      "name": "_read_checkpoints",
+      "line": 75,
+      "end_line": 87
+    },
+    {
+      "name": "_prepare_database",
+      "line": 90,
+      "end_line": 110
+    },
+    {
+      "name": "_parse_retry_after",
+      "line": 113,
+      "end_line": 127
+    },
+    {
+      "name": "_backoff_seconds",
+      "line": 130,
+      "end_line": 131
+    },
+    {
+      "name": "_body_snippet",
+      "line": 134,
+      "end_line": 135
+    },
+    {
+      "name": "_get_json",
+      "line": 138,
+      "end_line": 201
+    },
+    {
+      "name": "_health_partitions",
+      "line": 204,
+      "end_line": 215
+    },
+    {
+      "name": "_validate_page",
+      "line": 218,
+      "end_line": 231
+    },
+    {
+      "name": "_record_error",
+      "line": 234,
+      "end_line": 250
+    },
+    {
+      "name": "_begin_immediate",
+      "line": 253,
+      "end_line": 261
+    },
+    {
+      "name": "_apply_record",
+      "line": 264,
+      "end_line": 284
+    },
+    {
+      "name": "_process_partition",
+      "line": 287,
+      "end_line": 345
+    },
+    {
+      "name": "_run",
+      "line": 348,
+      "end_line": 377
+    },
+    {
+      "name": "_status",
+      "line": 380,
+      "end_line": 409
+    },
+    {
+      "name": "_reset",
+      "line": 412,
+      "end_line": 435
+    },
+    {
+      "name": "_build_parser",
+      "line": 438,
+      "end_line": 453
+    },
+    {
+      "name": "main",
+      "line": 456,
+      "end_line": 475
+    }
+  ],
+  "collector_sha256": "9d4111978f38d60843c457e5476ca1cf091001b6eae383fbdb3e4606944bb758"
+}

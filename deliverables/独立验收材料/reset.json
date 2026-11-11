@@ -1,0 +1,13 @@
+{
+  "args": [
+    "C:\\ProgramData\\Anaconda3\\python.exe",
+    "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\trial_repo\\collector.py",
+    "reset",
+    "--db",
+    "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\acceptance_runtime\\normal.db"
+  ],
+  "returncode": 0,
+  "stdout": "已重置采集库数据：C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\acceptance_runtime\\normal.db\n",
+  "stderr": "",
+  "elapsed": 0.14
+}

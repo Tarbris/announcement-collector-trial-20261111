@@ -1,0 +1,93 @@
+第二轮过程证据审阅（已完成的示范会话）
+
+范围与身份
+SessionID：01a1cafe-84f3-7551-82d1-b89188df96f7
+TurnID：01a1cafe-859d-7602-8ac6-7189f3a4140d
+初始SHA：8fe5bf0f65a0a66fdf10eb0f648d1ed29317cabe
+材料：work/trial_exec.jsonl、work/trial_rollout.jsonl、work/trial_final.txt及work/trial_repo最终源码。
+原始rollout记录task_started实际model_context_window=1000000；task_complete无error。exec事件最后为turn.completed。开始与结束时间分别为北京时间2026-11-11 22:24:00.600、22:36:28.194。
+本文件仅为只读审阅与证据索引，未执行测试、未修改交付代码，不是最终评分或完整Feedback。独立验收结果须由root另行记录，不冒充模型自己运行过的测试。
+第一轮失败记录属于另一Session，单独位于work/process_review_attempt1.txt；不得把第一轮引号错误、失败测试或网关429移植到本轮评价。
+
+一、模型实际做了什么
+
+1. 先读需求与源协议，再决定事务与并发设计。
+item_1，22:25:10.903发起，call_00_niefwtironh24zu067q9socu：读取README与仓库结构，exit=0。
+item_3，22:26:24.462发起，call_00_tamw5zhqj91skd04kgim01af：读取fixture_server.py、fixtures/pages.json、git状态和.gitignore，exit=0。
+item_4明确说明每分区独立连接、分区内游标顺序、页级BEGIN IMMEDIATE、事务提交前os._exit(86)；最终collector.py 287–345行体现这一处理顺序。
+这支持“结合现有协议设计实现”，不只是输出方案或跳过仓库理解。
+
+2. 实现代码、真实源集成测试后，第一次实际跑通5项。
+item_5新增collector.py（22:30:33.863，call_00_plciagh1nl5no848n3l4n47v）。
+item_7新增test_collector.py（22:31:31.865，call_00_qt9epuhyov1hw6mwqw6k8g5i）。
+item_8在执行前删去测试中的多余可选锁上下文（22:31:37.941，call_00_0wm2sw41341t8f9s89z6x5gs），随后运行，不属于最终未修复异常。
+item_10，22:31:42.528发起、22:31:57.767返回，call_00_eg0bi0c99besdeoi6uedvj6d：
+命令为python -m py_compile collector.py test_collector.py；python -m unittest -v test_collector.py。
+真实输出5项均ok，Ran 5 tests in 14.561s，OK，exit=0。没有先失败后口头宣称全通过的情况。
+
+3. 补充演示、数据库可视核验工具、README，并自主改善reset。
+item_12，22:32:38.953，call_00_y8s1o1u2wdq9tftcllnwnmj7：新增dump_db.py和demo.ps1。
+item_13，22:32:52.570，call_00_a3ehinssdze1545nhmhmiphu：README新增运行、崩溃恢复、演示和测试说明。
+item_14的Select-String显示被PowerShell表格列宽截断；item_15改用rg拿到完整代码片段（call_00_bzxrwtkzl3ngkeq2vzudkwqu，22:34:06.939）。这是已补救的阅读显示问题，不是产物残留缺陷。
+item_16，22:34:13.668，call_00_8xfhioghpo69hgg8s1o7y2r4：把reset从“依赖checkpoints存在后固定DELETE三表”改为仅清理实际存在的三个自有表，保留其它表与文件。该改动后又跑了demo和整套测试。
+
+4. 真正执行PowerShell演示，不仅写了演示脚本。
+item_18，22:34:17.683发起、22:34:21.330返回，call_00_xe7fcv3dlrf5gpcpts6uign4。
+实际命令powershell -ExecutionPolicy Bypass -File .\demo.ps1；exit=0，工具用时3.6秒。
+输出包括：
+- status：total=7、active=5、deleted=2、quarantined=2；north/south均done=true、next_cursor=null。
+- dump_db完整列出7条业务记录，含两个revision=2、title=null的墓碑；隔离记录为(north,n2,1)与(south,s3,2)，原始JSON及原因均在输出；两条checkpoint已完成。
+- 首跑源指标共9次/feed；north:n2依次429、200；south:s2依次503、503、200；max_parallel=2。
+- north:n2响应时间差2072834.546-2072833.437=1.109秒，满足至少1秒。
+- 重跑提示“所有分区均已完成，无需请求 /feed”；最终打印before=9 after=9 max_parallel=2，状态和数据库未增加。
+这证明本机演示在90秒限制内可跑完。这里只是实际执行记录，不等于已经生成或上传项目要求的屏幕录制视频；录屏需独立核对。
+
+5. 最终改动后再次完整验证，随后才给最终答复。
+item_20，22:34:38.343发起、22:34:53.557返回，call_00_goxjsxevfkfvd5ss9mjutw6g：
+实际执行python -m py_compile collector.py test_collector.py dump_db.py；python -m unittest -v test_collector.py；git status --short；git diff --stat。
+第二次5项均ok，Ran 5 tests in 14.468s，OK，exit=0。源码编译命令无错误输出，演示也实际运行了dump_db.py。
+最终git输出仅README被修改、collector/test/demo/dump四个新增；未显示禁止修改的fixture_server.py或fixtures/pages.json发生变更。
+item_21最终答复的“5项全通过、14.468秒、demo约3.6秒”均与本轮真实工具输出对应，无需借用第一轮或事后独立验收的结果来支撑。
+
+二、5项测试具体覆盖了什么
+
+test_01_normal_collection_state_retries_and_concurrency（test_collector.py 138–188行）
+真实启动本地fixture子进程，经HTTP采集后比较7条完整业务行、两个隔离位置及原始记录/原因、两个完成游标；检查max_parallel>=2、总9请求、north:n2两次、south:s2三次、429实际响应间隔>=1秒。不是仅检查退出码或只对照硬编码计数。
+
+test_02_completed_rerun_does_not_request_feed（190–205行）
+比较重跑前后的源requests数量、attempts、三表完整内容，检查没有新增/feed以及状态总数不变。
+
+test_03_real_process_crash_rolls_back_page_and_resumes（207–253行）
+通过子进程传入崩溃参数，要求真实退出86和指定日志；直接查崩溃后north checkpoint为(n2,0)，N001/N002仍revision1，north隔离数0；不带崩溃参数重新run，最终完整业务行等于预期、隔离2行、checkpoint均完成。没有以普通捕获异常替代进程终止。
+该测试覆盖事务回滚与恢复最终结果，但没有单独断言恢复后的请求只包含n2/n3，也没有逐字段比较隔离内容与独立干净基线。正常采集测试则核对隔离内容。不要把它描述成比源码实际更多的断言。
+
+test_04_reset_only_clears_the_selected_database（255–281行）
+建立两个采集数据库与额外keep.txt，清空目标库后核对目标三表为空、另一库仍完整、源请求指标不变、两个DB文件和额外文件都存在。
+
+test_503_exhaustion_is_clear_and_does_not_commit（325–361行）
+自建持续503服务，实际核对非零退出、清楚的重试耗尽错误、无成功提示、恰好5次请求、四个退避间隔至少约0.25/0.5/1/2秒，以及失败页仍为start/0、业务与隔离均0。
+
+三、最终声明的限度与测试空白
+
+模型最终主动说明：未构造真实超时源做端到端测试；未验证超过两个分区或多进程同时写同一数据库。源码确有socket.timeout/TimeoutError/URLError相关重试处理（collector.py 138–202行），但实现存在与实际运行验证是两件事。不能把“超时测试未跑”写成“超时功能已确认失败”，也不能把独立验收后来验证的超时结果说成模型原测试已覆盖。
+当前5项测试还没有单独构造：同revision但不同payload；已有墓碑后再次收到旧upsert；bool revision；非429/503状态失败。固定fixture覆盖了重复相同内容、旧upsert不覆盖新upsert、删除状态，但这些与所有边界组合并不等价。collector相应实现可静态阅读，是否在独立验收通过应另记结果。
+上述都是覆盖边界，不是已经复现的产物缺陷。当前只读过程审阅没有发现需要据此直接降档的虚假成功声明。4或5分仍应等待root独立验收，且结合实际未实现需求/缺陷决定，不先定总分。
+
+四、原始产物未被人工修补的验证
+
+已从本轮原始rollout读取6个真实patch调用，按原顺序在内存重放；README从初始SHA读取，其余新增文件从Add File起重建。将结果与当前文件统一换行后逐字符比较：collector.py、test_collector.py、demo.ps1、dump_db.py、README.md全部一致。
+这比“git状态看起来正常”更直接证明：当前受评文件内容完全可由本轮模型轨迹还原，未混入第一轮实现或审阅者补丁。保护文件fixture_server.py、fixtures/pages.json、.gitignore均与初始提交内容一致。
+检查工具只读文件和git对象，不把patch应用到工作区；未修改业务文件。详细结果位于work/trace_replay_verification.json。
+
+关键文件SHA256（原始文件字节，保留换行差异）：
+collector.py：9d4111978f38d60843c457e5476ca1cf091001b6eae383fbdb3e4606944bb758
+test_collector.py：63ee61e835dda24f79d7f9f3175b456a961ab5ac2ab41be4631d2584394c81cb
+demo.ps1：a358c310b74a0466b835e13e8d4ebf13b0111e11033e2b15aa430b674200b5be
+dump_db.py：62f513d169793fafa11de3355e858e84f35971bfb1b32153576abe1b24468daa
+README.md：5978c8cf55beb9d8033c2aef1a854ce4777a33d03a9bd98c4c0029ab9a21aa13
+
+五、撰写Feedback时的取舍
+
+可用的核心正面证据：先读契约；事务/恢复设计与实现相符；5项测试真实跑过两次；演示真实运行输出业务、隔离、游标及源指标；最终答复区分已验证和未验证；受评文件与轨迹完全对应。
+不要把item_8运行前整理测试、item_14输出截断后被item_15修正、item_16主动改进reset当作最终残留错误。不要把模型服务等待时长或第一轮网关失败当作本轮能力问题。
+若独立验收发现新问题，应引用独立复现的输入、命令、原始输出和文件行号，并与本轮模型过程证据连接；不能倒推模型曾看到不存在于轨迹中的错误。

@@ -1,5 +1,26 @@
 # 公告采集服务：不可靠分页源到可靠业务状态
 
+## 试标示范资料
+
+本仓库保存一次真实单轮模型执行，以及独立验收和反馈示例，用于交流练习，未提交正式标注平台。交付完整性示例评分为 **4/5**；模型自身 5 项测试通过，独立验收 50 项断言通过，另有 1 项扩展协议边界观察。
+
+- [下载完整示范包](deliverables/试标示范包.zip)
+- [填写样表（Excel）](deliverables/试标样表.xlsx)
+- [Feedback 全文](deliverables/Feedback示例.txt)
+- [运行录屏（720p，约31.55秒）](deliverables/运行录屏.mp4)
+- [原始单轮轨迹](deliverables/会话轨迹.jsonl)
+- [要求与流程说明](deliverables/要求与流程说明.txt)
+- [独立验收记录](deliverables/独立验收日志.txt)
+
+HTML 示范页请下载完整包后，在本地浏览器打开 `试标示范.html`。GitHub 文件预览不会直接运行 HTML 页面。
+
+初始快照：[https://github.com/Tarbris/announcement-collector-trial-20261111/commit/8fe5bf0f65a0a66fdf10eb0f648d1ed29317cabe](https://github.com/Tarbris/announcement-collector-trial-20261111/commit/8fe5bf0f65a0a66fdf10eb0f648d1ed29317cabe)
+
+模型原始产物快照：[https://github.com/Tarbris/announcement-collector-trial-20261111/commit/b0518c9d610fb7e1dce441a63eb3fd679af4a155](https://github.com/Tarbris/announcement-collector-trial-20261111/commit/b0518c9d610fb7e1dce441a63eb3fd679af4a155)
+
+这两个提交未被改写；此后的提交只整理交付资料与仓库导航。仓库为私有，分享给朋友前需要授予其访问权限，或直接发送下载的示范包。详细运行方法如下。
+
+
 这是一个只访问本机模拟数据源的增量采集开发任务。初始仓库仅提供源服务与固定数据，没有采集器；无需账号、第三方依赖或外网。适用 Python 3.9+、Windows/Linux。
 
 ## 启动源

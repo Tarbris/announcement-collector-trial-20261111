@@ -1,0 +1,15 @@
+{
+  "initial_sha": "8fe5bf0f65a0a66fdf10eb0f648d1ed29317cabe",
+  "final_sha": "b0518c9d610fb7e1dce441a63eb3fd679af4a155",
+  "session_id": "01a1cafe-84f3-7551-82d1-b89188df96f7",
+  "turn_id": "01a1cafe-859d-7602-8ac6-7189f3a4140d",
+  "model_context_window": 1000000,
+  "cli_version": "0.167.1",
+  "model": "auto_model/urm",
+  "user_turns": 1,
+  "remote_status": "已上传GitHub私有仓库；未授予评测团队访问权限",
+  "run_exit": 0,
+  "repository_url": "https://github.com/Tarbris/announcement-collector-trial-20261111",
+  "initial_commit_url": "https://github.com/Tarbris/announcement-collector-trial-20261111/commit/8fe5bf0f65a0a66fdf10eb0f648d1ed29317cabe",
+  "artifact_commit_url": "https://github.com/Tarbris/announcement-collector-trial-20261111/commit/b0518c9d610fb7e1dce441a63eb3fd679af4a155"
+}

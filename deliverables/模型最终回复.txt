@@ -1,0 +1,20 @@
+**实现完成**
+
+- `collector.py`：实现 `run` / `status` / `reset`，分区并发、游标顺序采集、事务原子提交、幂等 revision 合并、墓碑保护、坏记录隔离、429/503/超时重试与 `os._exit(86)` 崩溃注入。
+- `test_collector.py`：标准库 `unittest` 集成测试，实际启动本地 fixture 子进程。
+- `dump_db.py`：以 JSON 输出 `announcements`、`quarantine`、`checkpoints`，用于演示核验。
+- `demo.ps1`：Windows PowerShell 一键演示，干净启动、首跑、状态、数据库、源指标、二次重跑。
+- `README.md`：补充运行、崩溃恢复、演示和测试说明。
+- 未修改 `fixture_server.py` 与 `fixtures/pages.json`。
+
+**实际验证结果**
+
+- `python -m py_compile collector.py test_collector.py dump_db.py`：通过。
+- `python -m unittest -v test_collector.py`：5 项测试全部通过，耗时 14.468 秒。
+- 覆盖正常采集最终状态、429 `Retry-After >= 1s`、503 重试、跨分区 `max_parallel=2`、重复与旧版不覆盖、墓碑、坏记录隔离、完成态零 `/feed` 重跑、真实子进程崩溃回滚恢复、reset 数据隔离、503 重试耗尽不提交。
+- `demo.ps1` 实际运行 3.6 秒，输出 `total=7, active=5, deleted=2, quarantined=2`；源指标 9 次 `/feed`；重跑后仍为 9 次，证明未再访问 `/feed`。
+
+**尚未单独验证**
+
+- 未构造真实超时源做端到端超时重试测试；超时退避代码路径已实现，自动化仅覆盖了 503 重试耗尽。
+- 未测试超过两个分区或多采集进程同时操作同一数据库的场景；当前并发范围是 README 规定的两个分区、单进程多 worker。

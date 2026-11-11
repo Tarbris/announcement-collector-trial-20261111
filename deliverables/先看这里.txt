@@ -1,0 +1,19 @@
+试标练习示范包
+
+建议先用浏览器打开“试标示范.html”，再查看“试标样表.xlsx”。
+本例：公告增量采集；数据工程 / 数据采集、爬虫与RPA；练习预估困难；完整性4分。
+
+主要文件
+• 试标样表.xlsx：19字段填写示例，含纵向审阅页。
+• User_Prompt.txt、Feedback示例.txt：完整题目和评价文本。
+• 运行录屏.mp4：约31.55秒、720p，真实运行、崩溃与恢复。
+• 会话轨迹.jsonl、模型最终回复.txt、过程证据索引.txt：单轮过程证据。
+• 初始环境.zip、产物源码.zip、仓库快照.bundle：源代码与完整Git历史。可用git clone 仓库快照.bundle demo恢复仓库。
+• 独立验收结果.json、独立验收日志.txt、独立验收材料：50项通过、0核心失败、1补充观察及复测工具。
+• 要求与流程说明.txt：项目文件与培训口述的要求、差异和正式流程。
+
+注意：这是给朋友参考的练习，未提交项目方；未取得正式自动难度判定。材料与初始、产物快照已上传GitHub私有仓库，需账号访问权限；尚未上传正式对象存储或提交平台。未将密钥放入本包。独立验收工具与模型产物分开，未修复被测代码。
+
+GitHub私有仓库：https://github.com/Tarbris/announcement-collector-trial-20261111
+初始快照：https://github.com/Tarbris/announcement-collector-trial-20261111/commit/8fe5bf0f65a0a66fdf10eb0f648d1ed29317cabe
+产物快照：https://github.com/Tarbris/announcement-collector-trial-20261111/commit/b0518c9d610fb7e1dce441a63eb3fd679af4a155

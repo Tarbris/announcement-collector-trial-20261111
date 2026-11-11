@@ -1,0 +1,53 @@
+{
+  "north": {
+    "start": {
+      "records": [
+        {"id": "N001", "revision": 1, "op": "upsert", "title": "北区道路养护公告（初版）"},
+        {"id": "N002", "revision": 1, "op": "upsert", "title": "北区停水公告"},
+        {"id": "N001", "revision": 1, "op": "upsert", "title": "北区道路养护公告（初版）"}
+      ],
+      "next_cursor": "n2"
+    },
+    "n2": {
+      "records": [
+        {"id": "N001", "revision": 2, "op": "upsert", "title": "北区道路养护公告（时间更正）"},
+        {"id": "N_BAD", "revision": 1, "op": "upsert"},
+        {"id": "N002", "revision": 2, "op": "delete"}
+      ],
+      "next_cursor": "n3"
+    },
+    "n3": {
+      "records": [
+        {"id": "N003", "revision": 1, "op": "upsert", "title": "北区公共设施检修公告"},
+        {"id": "N001", "revision": 1, "op": "upsert", "title": "北区道路养护公告（初版）"},
+        {"id": "N001", "revision": 2, "op": "upsert", "title": "北区道路养护公告（时间更正）"}
+      ],
+      "next_cursor": null
+    }
+  },
+  "south": {
+    "start": {
+      "records": [
+        {"id": "S001", "revision": 1, "op": "upsert", "title": "南区管线维护公告（初版）"},
+        {"id": "S002", "revision": 1, "op": "upsert", "title": "南区临时交通管制公告"}
+      ],
+      "next_cursor": "s2"
+    },
+    "s2": {
+      "records": [
+        {"id": "S001", "revision": 2, "op": "upsert", "title": "南区管线维护公告（更正）"},
+        {"id": "S002", "revision": 2, "op": "delete"},
+        {"id": "S003", "revision": 1, "op": "upsert", "title": "南区场馆开放公告（初版）"}
+      ],
+      "next_cursor": "s3"
+    },
+    "s3": {
+      "records": [
+        {"id": "S003", "revision": 2, "op": "upsert", "title": "南区场馆开放公告（更正）"},
+        {"id": "S004", "revision": 1, "op": "upsert", "title": "南区河道巡检公告"},
+        {"id": "S_BAD", "revision": "oops", "op": "upsert", "title": "版本字段无效"}
+      ],
+      "next_cursor": null
+    }
+  }
+}

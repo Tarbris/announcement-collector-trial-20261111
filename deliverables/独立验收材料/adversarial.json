@@ -1,0 +1,17 @@
+{
+  "args": [
+    "C:\\ProgramData\\Anaconda3\\python.exe",
+    "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\trial_repo\\collector.py",
+    "run",
+    "--db",
+    "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\acceptance_runtime\\adversarial.db",
+    "--base-url",
+    "http://127.0.0.1:62763",
+    "--workers",
+    "2"
+  ],
+  "returncode": 0,
+  "stdout": "采集完成：north, south\n",
+  "stderr": "",
+  "elapsed": 0.172
+}

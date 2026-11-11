@@ -1,0 +1,34 @@
+01  CLEAN START  /  empty dedicated database
+database exists before run: False
+> python fixture_server.py --port 18769
+health: {"ok": true, "partitions": ["north", "south"]}
+> python collector.py run --base-url http://127.0.0.1:18769 --db C:\Users\PanXuanWen\Documents\Codex\2026-11-11\c-users-panxuanwen-documents-parttimejob-recordscreenz\work\recording_runtime\demo_1794407844.db --workers 2
+采集完成：north, south
+[process exit = 0]
+> python collector.py status --db C:\Users\PanXuanWen\Documents\Codex\2026-11-11\c-users-panxuanwen-documents-parttimejob-recordscreenz\work\recording_runtime\demo_1794407844.db
+{"total": 7, "active": 5, "deleted": 2, "quarantined": 2, "partitions": {"north": {"next_cursor": null, "done": true}, "south": {"next_cursor": null, "done": true}}}
+[process exit = 0]
+source metrics: {"attempts": {"south:start": 1, "north:start": 1, "north:n2": 2, "south:s2": 3, "south:s3": 1, "north:n3": 1}, "max_parallel": 2}
+02  IDEMPOTENT RERUN / same database, no reset
+> python collector.py run --base-url http://127.0.0.1:18769 --db C:\Users\PanXuanWen\Documents\Codex\2026-11-11\c-users-panxuanwen-documents-parttimejob-recordscreenz\work\recording_runtime\demo_1794407844.db --workers 2
+所有分区均已完成，无需请求 /feed
+[process exit = 0]
+> python collector.py status --db C:\Users\PanXuanWen\Documents\Codex\2026-11-11\c-users-panxuanwen-documents-parttimejob-recordscreenz\work\recording_runtime\demo_1794407844.db
+{"total": 7, "active": 5, "deleted": 2, "quarantined": 2, "partitions": {"north": {"next_cursor": null, "done": true}, "south": {"next_cursor": null, "done": true}}}
+[process exit = 0]
+source metrics: {"attempts": {"south:start": 1, "north:start": 1, "north:n2": 2, "south:s2": 3, "south:s3": 1, "north:n3": 1}, "max_parallel": 2}
+03  CRASH BEFORE COMMIT / separate clean database
+> python collector.py run --base-url http://127.0.0.1:18769 --db C:\Users\PanXuanWen\Documents\Codex\2026-11-11\c-users-panxuanwen-documents-parttimejob-recordscreenz\work\recording_runtime\demo_1794407844_crash.db --workers 2 --crash-before-commit north:n2
+FAULT_INJECTION north:n2 before_commit
+[process exit = 86]
+north rows after crash: [('N001', 1, 0), ('N002', 1, 0)]
+north checkpoint after crash: [('n2', 0)]
+04  RESUME / same crashed database, no reset
+> python collector.py run --base-url http://127.0.0.1:18769 --db C:\Users\PanXuanWen\Documents\Codex\2026-11-11\c-users-panxuanwen-documents-parttimejob-recordscreenz\work\recording_runtime\demo_1794407844_crash.db --workers 2
+采集完成：north, south
+[process exit = 0]
+> python collector.py status --db C:\Users\PanXuanWen\Documents\Codex\2026-11-11\c-users-panxuanwen-documents-parttimejob-recordscreenz\work\recording_runtime\demo_1794407844_crash.db
+{"total": 7, "active": 5, "deleted": 2, "quarantined": 2, "partitions": {"north": {"next_cursor": null, "done": true}, "south": {"next_cursor": null, "done": true}}}
+[process exit = 0]
+source metrics: {"attempts": {"north:start": 1, "south:start": 1, "north:n2": 3, "south:s2": 3, "south:s3": 2, "north:n3": 1}, "max_parallel": 2}
+END / Full runtime log saved alongside this recording.

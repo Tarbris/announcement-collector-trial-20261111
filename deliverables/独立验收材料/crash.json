@@ -1,0 +1,19 @@
+{
+  "args": [
+    "C:\\ProgramData\\Anaconda3\\python.exe",
+    "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\trial_repo\\collector.py",
+    "run",
+    "--db",
+    "C:\\Users\\PanXuanWen\\Documents\\Codex\\2026-11-11\\c-users-panxuanwen-documents-parttimejob-recordscreenz\\work\\acceptance_runtime\\crash.db",
+    "--base-url",
+    "http://127.0.0.1:62724",
+    "--workers",
+    "2",
+    "--crash-before-commit",
+    "north:n2"
+  ],
+  "returncode": 86,
+  "stdout": "FAULT_INJECTION north:n2 before_commit\n",
+  "stderr": "",
+  "elapsed": 1.437
+}
