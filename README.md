@@ -71,3 +71,55 @@ python collector.py run --base-url http://127.0.0.1:8765 --db runtime/demo.db --
 ## 不可修改范围
 
 不得修改 `fixture_server.py` 与 `fixtures/pages.json`。可以新增采集器、测试、演示脚本和使用文档。整个业务实现与测试只允许 Python 标准库。`runtime/` 是临时产物目录，已忽略。
+
+## 实现与运行说明
+
+实现文件：
+
+* `collector.py`：`run` / `status` / `reset` 命令、HTTP 重试、分区分页、事务合并与崩溃注入。
+* `test_collector.py`：基于真实 fixture 子进程和自建 503 服务的自动化测试。
+* `dump_db.py`：以 JSON 打印三张采集表，便于核验演示结果。
+* `demo.ps1`：Windows PowerShell 一键演示。
+
+手工运行：
+
+```powershell
+New-Item -ItemType Directory -Force runtime | Out-Null
+python fixture_server.py --port 8765
+# 在另一个 PowerShell 窗口：
+python collector.py run --base-url http://127.0.0.1:8765 --db runtime/demo.db --workers 2
+python collector.py status --db runtime/demo.db
+python dump_db.py --db runtime/demo.db
+```
+
+`run` 为每个分区创建一个 worker；每个 worker 使用独立 SQLite 连接，按 checkpoint 游标串行拉取。每页在一个 `BEGIN IMMEDIATE` 事务中写入合法公告、隔离记录和下一游标，`commit` 后才算完成。`checkpoints.done=0` 表示仍需从 `next_cursor` 继续，`done=1, next_cursor=null` 才表示分区完成。
+
+对 429 按 `Retry-After` 等待；对 503、超时和网络错误使用有上限的指数退避（0.25、0.5、1、2 秒），最多追加 4 次重试。重试耗尽或遇到其他非成功 HTTP 状态时，命令在 stderr 输出具体 URL、状态和响应片段，并非零退出，不会提交失败页。
+
+重跑前先查询 checkpoint；若所有分区均已完成，`run` 直接成功返回且不访问 `/feed`。对未完成分区，从最后已提交游标继续，不停机清库。
+
+### 崩溃注入与恢复
+
+```powershell
+python collector.py run --base-url http://127.0.0.1:8765 --db runtime/demo.db --workers 2 --crash-before-commit north:n2
+```
+
+当 `north:n2` 页的业务写入、隔离写入和游标 SQL 都已执行但事务尚未提交时，进程打印并 flush `FAULT_INJECTION north:n2 before_commit`，随后调用 `os._exit(86)`。未提交事务由 SQLite 日志恢复时回滚；再次不带参数运行会从已提交的 `north:n2` checkpoint 继续。测试会直接验证崩溃页未落库、恢复后最终状态与干净首跑一致。
+
+### Windows 演示
+
+在仓库根目录执行（默认端口 8765，可传 `-Port`）：
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\demo.ps1
+```
+
+脚本会删除仅属于演示的 `runtime/demo.db`，启动本机源，完成干净首跑，打印 `status`、三张表内容和源 `/metrics`，然后执行一次已完成任务的重跑并再次打印指标。正常在数秒内结束，远低于 90 秒。
+
+### 自动化测试
+
+```powershell
+python -m unittest -v test_collector.py
+```
+
+测试覆盖：真实本地源正常采集与精确最终状态、429 `Retry-After` 间隔、503 重试、跨分区并发、重复/旧版本与墓碑保护、坏记录隔离、完成后二次运行不请求 `/feed`、真实子进程崩溃后的回滚与恢复、`reset` 只影响指定库，以及 503 重试耗尽时不提交并给出清晰错误。
