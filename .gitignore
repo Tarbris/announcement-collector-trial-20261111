@@ -1,0 +1,17 @@
+.env
+.env.*
+!.env.example
+*token*
+*secret*
+*credentials*
+*.pem
+*.key
+__pycache__/
+*.py[cod]
+.venv/
+runtime/
+*.db
+*.db-wal
+*.db-shm
+*.sqlite*
+
